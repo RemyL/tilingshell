@@ -636,6 +636,20 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
                 true,
             ],
             [
+                Settings.SETTING_MANUAL_GRAB_WINDOW_BEGIN,
+                _('Begin manual grab window'),
+                _('Start grabbing a window with keybinding'),
+                false,
+                true,
+            ],
+            [
+                Settings.SETTING_MANUAL_GRAB_WINDOW_END,
+                _('End manual grab window'),
+                _('End grabbing a window with keybinding'),
+                false,
+                true,
+            ],
+            [
                 Settings.SETTING_SPAN_WINDOW_RIGHT,
                 _('Span window to right tile'),
                 _('Span the focused window to the tile on its right'),

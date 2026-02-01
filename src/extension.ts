@@ -37,7 +37,7 @@ import GlobalState from './utils/globalState';
 import Indicator from './indicator/indicator';
 import { ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js';
 import DBus from './dbus';
-import { KeyBindingsDirection, FocusSwitchDirection } from './keybindings';
+import { KeyBindingsDirection, FocusSwitchDirection, KeyBindingsGrab } from './keybindings';
 import KeyBindings from './keybindings';
 import SettingsOverride from './settings/settingsOverride';
 import { ResizingManager } from './components/tilingsystem/resizeManager';
@@ -257,6 +257,29 @@ export default class TilingShellExtension extends Extension {
                     this._onKeyboardMoveWin(dp, dir, false);
                 },
             );
+            this._signals.connect(
+                this._keybindings,
+                'manual-window-grab',
+                (
+                    kb: KeyBindings, 
+                    dp: Meta.Display,
+                    gra: KeyBindingsGrab
+                ) => {
+                    const window = dp.focus_window;
+                    if (!window)
+                        return;
+                    const monitorIndex = window.get_monitor();
+                    const manager = this._tilingManagers[monitorIndex];
+                    if (!manager)
+                        return;
+                    if ( gra === KeyBindingsGrab.BEGIN) {
+                        manager._onWindowGrabBegin(window, null);
+                    }
+                    else {
+                        manager._onWindowGrabEnd(window);
+                    }
+  },
+);
             this._signals.connect(
                 this._keybindings,
                 'span-window',
