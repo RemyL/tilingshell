@@ -926,18 +926,21 @@ export class TilingManager {
         scalingFactor: number,
     ): void {
         const tiledWindows: ExtendedWindow[] = [];
-        const nontiledWindows: Meta.Window[] = [];
+        const suggestionWindows: Meta.Window[] = [];
         getWindows().forEach((extWin) => {
             if (
+                extWin != global.display.focus_window
+            )
+                suggestionWindows.push(extWin);
+            else if (
                 extWin &&
                 !extWin.minimized &&
                 (extWin as ExtendedWindow).assignedTile
             )
                 tiledWindows.push(extWin as ExtendedWindow);
-            else nontiledWindows.push(extWin);
         });
 
-        if (nontiledWindows.length === 0) return;
+        if (suggestionWindows.length === 0) return;
 
         this._tilingSuggestionsLayout.destroy();
         this._tilingSuggestionsLayout = new TilingLayoutWithSuggestions(
@@ -955,7 +958,7 @@ export class TilingManager {
         });*/
         this._tilingSuggestionsLayout.open(
             tiledWindows,
-            nontiledWindows,
+            suggestionWindows,
             window,
             windowDesiredRect,
             monitorIndex,
