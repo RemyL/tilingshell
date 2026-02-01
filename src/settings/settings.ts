@@ -124,6 +124,8 @@ export default class Settings {
     static KEY_ENABLE_SCREEN_EDGES_WINDOWS_SUGGESTIONS = 'enable-screen-edges-windows-suggestions';
     static KEY_EDGE_TILING_MODE = 'edge-tiling-mode';
 
+    static SETTING_MANUAL_GRAB_WINDOW_BEGIN = 'manual-window-grab-begin';
+    static SETTING_MANUAL_GRAB_WINDOW_END = 'manual-window-grab-end';
     static SETTING_MOVE_WINDOW_RIGHT = 'move-window-right';
     static SETTING_MOVE_WINDOW_LEFT = 'move-window-left';
     static SETTING_MOVE_WINDOW_UP = 'move-window-up';

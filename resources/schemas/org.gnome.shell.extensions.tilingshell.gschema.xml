@@ -209,6 +209,14 @@
         </key>
 
         <!-- keybindings -->
+        <key type="as" name="manual-window-grab-begin">
+			<default><![CDATA[['<Ctrl><Super>b']]]></default>
+			<summary>Start grabbing a window with keybinding</summary>
+		</key>
+		<key type="as" name="manual-window-grab-end">
+			<default><![CDATA[['<Ctrl><Super>e']]]></default>
+			<summary>End grabbing a window with keybinding</summary>
+		</key>
 		<key type="as" name="move-window-right">
 			<default><![CDATA[['<Super>Right']]]></default>
 			<summary>Move focused window to the tile to its right</summary>

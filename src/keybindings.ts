@@ -21,10 +21,18 @@ export enum FocusSwitchDirection {
     PREV,
 }
 
+export enum KeyBindingsGrab {
+    BEGIN = 1,
+    END,
+}
+
 export default class KeyBindings extends GObject.Object {
     static { registerGObjectClass(this, {
         GTypeName: 'KeyBindings',
         Signals: {
+            'manual-window-grab': {
+                param_types: [Meta.Display.$gtype, GObject.TYPE_INT], // Meta.Display, Meta.Window, KeyBindingsGrab
+            },
             'move-window': {
                 param_types: [Meta.Display.$gtype, GObject.TYPE_INT], // Meta.Display, KeyBindingsDirection
             },
@@ -96,6 +104,26 @@ export default class KeyBindings extends GObject.Object {
     private _applyKeybindings(extensionSettings: Gio.Settings) {
         // Disable native keybindings for Super + Left/Right
         this._overrideNatives(extensionSettings);
+        
+        Main.wm.addKeybinding(
+            Settings.SETTING_MANUAL_GRAB_WINDOW_BEGIN,
+            extensionSettings,
+            Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.NORMAL,
+            (display: Meta.Display, window: Meta.Window) => {
+                this.emit('manual-window-grab', display, KeyBindingsGrab.BEGIN);
+            },
+        );
+        
+        Main.wm.addKeybinding(
+            Settings.SETTING_MANUAL_GRAB_WINDOW_END,
+            extensionSettings,
+            Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.NORMAL,
+            (display: Meta.Display, window: Meta.Window) => {
+                this.emit('manual-window-grab', display, KeyBindingsGrab.END);
+            },
+        );
 
         Main.wm.addKeybinding(
             Settings.SETTING_SPAN_WINDOW_RIGHT,
@@ -363,6 +391,8 @@ export default class KeyBindings extends GObject.Object {
 
     private _removeKeybindings() {
         this._restoreNatives();
+        Main.wm.removeKeybinding(Settings.SETTING_MANUAL_GRAB_WINDOW_BEGIN);
+        Main.wm.removeKeybinding(Settings.SETTING_MANUAL_GRAB_WINDOW_END);
         Main.wm.removeKeybinding(Settings.SETTING_MOVE_WINDOW_RIGHT);
         Main.wm.removeKeybinding(Settings.SETTING_MOVE_WINDOW_LEFT);
         Main.wm.removeKeybinding(Settings.SETTING_MOVE_WINDOW_UP);
