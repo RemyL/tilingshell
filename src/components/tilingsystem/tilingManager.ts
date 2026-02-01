@@ -1264,6 +1264,12 @@ export class TilingManager {
     private _autoTile(window: Meta.Window, windowCreated: boolean) {
         // do not handle windows in monitors not managed by this manager
         if (window.get_monitor() !== this._monitor.index) return;
+        
+        const hasTiledWindow = getWindows().some((extWin) =>
+            extWin &&
+            !extWin.minimized &&
+            (extWin as ExtendedWindow).assignedTile
+        );
 
         if (
             window === null ||
@@ -1272,7 +1278,8 @@ export class TilingManager {
             window.is_attached_dialog() ||
             window.minimized ||
             window.maximizedHorizontally ||
-            window.maximizedVertically
+            window.maximizedVertically ||
+            !hasTiledWindow
         )
             return;
 
