@@ -929,7 +929,7 @@ export class TilingManager {
         const suggestionWindows: Meta.Window[] = [];
         getWindows().forEach((extWin) => {
             if (
-                extWin != global.display.focus_window
+                extWin !== global.display.focus_window
             )
                 suggestionWindows.push(extWin);
             else if (
